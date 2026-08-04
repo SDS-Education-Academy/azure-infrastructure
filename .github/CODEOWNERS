@@ -1,0 +1,6 @@
+# Default owners for everything in the repo
+*       @SDS-Education-Academy/dev-team
+
+# Infrastructure modules owned by specific teams/users
+/feature/network/    @network-lead
+/feature/security/   @security-admin
