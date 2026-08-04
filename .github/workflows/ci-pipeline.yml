@@ -1,0 +1,48 @@
+name: Pull Request CI Checks
+
+# Trigger when a PR is created or updated against main branch
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+jobs:
+  lint-and-validate:
+    name: Code Quality & Syntax Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Repository code checkout karna
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js (agar frontend/JS project hai)
+      - name: Setup Node.js Environment
+        uses: actions/node-api@v4
+        with:
+          node-version: '20'
+
+      # 3. Dependencies install karna
+      - name: Install Dependencies
+        run: npm ci
+
+      # 4. Syntax / Linting check run karna
+      - name: Run Linter / Code Check
+        run: |
+          echo "Running code quality checks..."
+          # Replace with your actual command (e.g., npm run lint or npx eslint .)
+          npm test --if-present
+
+  security-scan:
+    name: Dependency Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Basic vulnerability check
+      - name: Run Security Audit
+        run: npm audit --audit-level=high
+        continue-on-error: true # Warning only (or set false to fail build on security bugs)
